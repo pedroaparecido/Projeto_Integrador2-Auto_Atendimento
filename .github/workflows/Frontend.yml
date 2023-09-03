@@ -1,0 +1,41 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '**'
+      - '!.github/workflows/Database.yml'
+      - '!flyway/**'
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Install Flutter
+      uses: subosito/flutter-action@v1
+    
+    - name: Build Web
+      run: |
+        flutter config --enable-web
+        flutter pub get
+        flutter build web --release --no-tree-shake-icons
+      
+    - name: Install AzCopy
+      uses: kheiakiyama/install-azcopy-action@v1
+      with:
+        version: 'v10'
+
+    - name: Sync files
+      run: |
+          now=$(date --utc --iso-8601=seconds)
+          expire_date=$(date -d "$now + 1 day" +%Y-%m-%dT%H:%MZ)
+          sas=$(az storage container generate-sas --account-name totemwebsite --name '$web' --permissions adlrw --expiry $expire_date --account-key KpBbh9+9u0b1REuCVyi4+hfAEBk/y97XtR2xHE2VvnP9HKUIRDfNvstohFvz6mz7qPUBI0zdo5o1+AStpz9z+A== | sed 's/"//g')
+          azcopy sync build/web "https://totemwebsite.blob.core.windows.net/\$web?$sas" --put-md5
+
+

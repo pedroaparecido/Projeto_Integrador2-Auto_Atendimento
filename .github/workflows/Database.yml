@@ -1,0 +1,25 @@
+name: Deploy Database
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '.github/workflows/Database.yml'
+      - 'flyway/**'
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Run flyway
+      working-directory: flyway
+      run: |
+        echo pwd ${PWD}
+        docker run --rm -v ${PWD}:/flyway/sql -v ${PWD}:/flyway/conf flyway/flyway:9.21.1 migrate
+
+
