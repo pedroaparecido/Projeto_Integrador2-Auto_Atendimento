@@ -2,7 +2,7 @@ name: Deploy Database
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - '.github/workflows/Database.yml'
       - 'flyway/**'
