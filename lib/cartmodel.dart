@@ -8,7 +8,6 @@ class CartModel extends Model {
 
   void addProduct(product) {
     int index = cart.indexWhere((i) => i.id == product.id);
-    print(index);
     if (index != -1) {
       var current_qty = cart[index].qty;
       updateProduct(product, product.qty + current_qty);
@@ -47,8 +46,6 @@ class CartModel extends Model {
     cart.forEach((f) {
       totalCartValue += f.price * f.qty;
     });
-
-    print('total ${totalCartValue}');
   }
 }
 

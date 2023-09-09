@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         initialRoute: RouteConfig.home,
         debugShowCheckedModeBanner: false,
         getPages: [
-          GetPage(name: RouteConfig.home, page: () => const HomePage()),
+          GetPage(name: RouteConfig.home, page: () => HomePage()),
           GetPage(name: RouteConfig.about, page: () => const AboutPage()),
           GetPage(name: RouteConfig.contact, page: () => ContactPage()),
           GetPage(name: RouteConfig.companyRegister, page: () => isAdmin ? CompanyRegisterPage() : LoginPage()),

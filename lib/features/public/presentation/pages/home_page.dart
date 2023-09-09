@@ -1,10 +1,17 @@
 import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
+import 'package:atendimento_automatico/features/product/domain/entities/product_category_entity.dart';
+import 'package:atendimento_automatico/features/product/presentation/controllers/product_category_dropdown_controller.dart';
+import 'package:atendimento_automatico/features/product/presentation/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final _categoryController = Get.put(ProductCategoryDropdownController());
+  final _productController = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +26,23 @@ class HomePage extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Container(
-                    color: Colors.amber,
-                    child: ListView(
-                      padding: const EdgeInsets.only(bottom: 130),
-                      children: const [
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                      ],
-                    ),
-                  ),
+                      color: Colors.amber,
+                      child: Obx(() => _categoryController.isLoading.value
+                          ? const SizedBox(
+                              height: 320,
+                              child: Center(
+                                  child: SizedBox(
+                                      height: 100,
+                                      child: Text('Carregando categorias...'))))
+                          : ListView.builder(
+                              itemCount:
+                                  _categoryController.productCategories.length,
+                              padding: const EdgeInsets.only(bottom: 130),
+                              itemBuilder: (context, index) {
+                                return CategoryCardListTileWidget(
+                                    category: _categoryController.productCategories
+                                    .elementAt(index));
+                              }))),
                 ),
                 Expanded(
                   flex: 9,
@@ -163,8 +172,9 @@ class HomePage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                             onPressed: () => {
-                              Navigator.popAndPushNamed(context, RouteConfig.cart)
-                            },
+                                  Navigator.popAndPushNamed(
+                                      context, RouteConfig.cart)
+                                },
                             child: const Text(
                               'CONFERIR PEDIDO',
                               textAlign: TextAlign.center,
@@ -195,9 +205,12 @@ class HomePage extends StatelessWidget {
 }
 
 class CategoryCardListTileWidget extends StatelessWidget {
+  final ProductCategoryEntity category;
+
   const CategoryCardListTileWidget({
-    super.key,
-  });
+    Key? key,
+    required this.category,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -221,12 +234,12 @@ class CategoryCardListTileWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: const Align(
+      child: Align(
         alignment: Alignment.bottomCenter,
         child: Text(
-          'REFRIGERANTES',
+          category.name,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 30,
             fontWeight: FontWeight.bold,
