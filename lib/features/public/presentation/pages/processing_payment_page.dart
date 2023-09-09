@@ -37,7 +37,7 @@ class _ProcessingPaymentPageState extends State<ProcessingPaymentPage>
         future: Future.delayed(
           const Duration(seconds: 5),
           () {
-            Navigator.pushNamed(context, '/status-payment');
+            Navigator.popAndPushNamed(context, '/status-payment');
           },
         ),
         builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class _ProcessingPaymentPageState extends State<ProcessingPaymentPage>
               Text(
                 'Processando Pagamento',
                 style: Theme.of(context).textTheme.titleLarge,
-                textScaleFactor: 4,
+                textScaleFactor: 3,
               ),
               const SizedBox(height: 100),
               CircularProgressIndicator(

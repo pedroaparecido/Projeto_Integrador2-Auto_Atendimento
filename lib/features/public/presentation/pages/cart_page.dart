@@ -43,9 +43,8 @@ class CartPage extends StatelessWidget {
                           child: ScopedModel.of<CartModel>(context,
                                           rebuildOnChange: true)
                                       .cart
-                                      .length ==
-                                  0
-                              ? Center(
+                                      .isEmpty
+                              ? const Center(
                                   child: Text("No items in Cart"),
                                 )
                               : ListView.builder(
@@ -68,7 +67,7 @@ class CartPage extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Container(
                       width: double.infinity,
@@ -91,7 +90,7 @@ class CartPage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.popAndPushNamed(context, '/home');
                           },
                           child: const Text(
                             'Voltar',
@@ -135,12 +134,15 @@ class CartPage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/payment');
+                              ScopedModel.of<CartModel>(context,
+                                          rebuildOnChange: true).cart.isEmpty ? null :
+                              Navigator.popAndPushNamed(context, '/processing-payment');
                             },
-                            child: const Text(
-                              'Pagar',
+                            child: Text(
+                              ScopedModel.of<CartModel>(context,
+                                          rebuildOnChange: true).cart.isEmpty ? 'TODO ' : 'Pagar',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,
