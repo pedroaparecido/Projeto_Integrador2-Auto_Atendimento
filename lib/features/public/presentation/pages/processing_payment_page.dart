@@ -1,3 +1,4 @@
+import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
 
 class ProcessingPaymentPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ProcessingPaymentPageState extends State<ProcessingPaymentPage>
         future: Future.delayed(
           const Duration(seconds: 5),
           () {
-            Navigator.popAndPushNamed(context, '/status-payment');
+            Navigator.popAndPushNamed(context, RouteConfig.statusPayment);
           },
         ),
         builder: (context, snapshot) {

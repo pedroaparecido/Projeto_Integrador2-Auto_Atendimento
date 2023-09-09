@@ -1,3 +1,4 @@
+import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
 
 class StatusPaymentPage extends StatelessWidget {
@@ -9,7 +10,7 @@ class StatusPaymentPage extends StatelessWidget {
         future: Future.delayed(
           const Duration(seconds: 5),
           () {
-            Navigator.popAndPushNamed(context, '/home');
+            Navigator.popAndPushNamed(context, RouteConfig.home);
           },
         ),
         builder: (context, snapshot) {

@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Get.offNamed(RouteConfig.adminPage);
+                          Get.offNamed(RouteConfig.admin);
                         }
                       },
                       style: ElevatedButton.styleFrom(

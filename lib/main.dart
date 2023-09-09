@@ -1,4 +1,5 @@
 import 'package:atendimento_automatico/features/public/presentation/pages/cart_page.dart';
+import 'package:atendimento_automatico/features/public/presentation/pages/payment_type_page.dart';
 import 'package:atendimento_automatico/features/public/presentation/pages/processing_payment_page.dart';
 import 'package:atendimento_automatico/features/public/presentation/pages/status_payment_page.dart';
 import 'package:flutter/material.dart';
@@ -52,11 +53,12 @@ class MyApp extends StatelessWidget {
           GetPage(name: RouteConfig.product, page: () => ProductPage()),
           GetPage(name: RouteConfig.images, page: () => BannersPage()),
           GetPage(name: RouteConfig.productCategory, page: () => ProductCategoryPage()),
-          GetPage(name: RouteConfig.adminPage, page: () => const AdminPage()),
+          GetPage(name: RouteConfig.admin, page: () => const AdminPage()),
           GetPage(name: RouteConfig.login, page: () => LoginPage()),
-          GetPage(name: RouteConfig.cartPage, page: () => CartPage()),
+          GetPage(name: RouteConfig.cart, page: () => const CartPage()),
           GetPage(name: RouteConfig.processingPayment, page: () => const ProcessingPaymentPage()),
           GetPage(name: RouteConfig.statusPayment, page: () => const StatusPaymentPage()),
+          GetPage(name: RouteConfig.paymentType, page: () => const PaymentTypePage()),
         ],
       )
     );

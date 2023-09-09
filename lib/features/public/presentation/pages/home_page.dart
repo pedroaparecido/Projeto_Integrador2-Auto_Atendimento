@@ -1,4 +1,5 @@
 import 'package:atendimento_automatico/cartmodel.dart';
+import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -162,7 +163,7 @@ class HomePage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                             onPressed: () => {
-                              Navigator.popAndPushNamed(context, '/cart')
+                              Navigator.popAndPushNamed(context, RouteConfig.cart)
                             },
                             child: const Text(
                               'CONFERIR PEDIDO',

@@ -1,4 +1,5 @@
 import 'package:atendimento_automatico/cartmodel.dart';
+import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -90,7 +91,7 @@ class CartPage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.popAndPushNamed(context, '/home');
+                            Navigator.popAndPushNamed(context, RouteConfig.home);
                           },
                           child: const Text(
                             'Voltar',
@@ -136,7 +137,7 @@ class CartPage extends StatelessWidget {
                             onPressed: () {
                               ScopedModel.of<CartModel>(context,
                                           rebuildOnChange: true).cart.isEmpty ? null :
-                              Navigator.popAndPushNamed(context, '/processing-payment');
+                              Navigator.popAndPushNamed(context, RouteConfig.paymentType);
                             },
                             child: Text(
                               ScopedModel.of<CartModel>(context,
