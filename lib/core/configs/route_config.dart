@@ -14,4 +14,6 @@ class RouteConfig {
   static const String companyPage = '/company';
   static const String companyRegister = '/company-register';
   static const String cartPage = '/cart';
+  static const String processingPayment = '/processing-payment';
+  static const String statusPayment = '/status-payment';
 }
