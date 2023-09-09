@@ -1,3 +1,4 @@
+import 'package:atendimento_automatico/features/public/presentation/pages/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: RouteConfig.productCategory, page: () => ProductCategoryPage()),
           GetPage(name: RouteConfig.adminPage, page: () => const AdminPage()),
           GetPage(name: RouteConfig.login, page: () => LoginPage()),
+          GetPage(name: RouteConfig.cartPage, page: () => CartPage()),
         ],
       )
     );

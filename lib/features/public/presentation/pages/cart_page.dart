@@ -2,8 +2,8 @@ import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class CartPage extends StatelessWidget {
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,25 +16,6 @@ class HomePage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: 3,
-                  child: Container(
-                    color: Colors.amber,
-                    child: ListView(
-                      padding: const EdgeInsets.only(bottom: 130),
-                      children: const [
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                        CategoryCardListTileWidget(),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
                   flex: 9,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,7 +23,7 @@ class HomePage extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.all(18.0),
                         child: Text(
-                          'LISTAGEM DE PRODUTOS',
+                          'CESTA DE PEDIDOS',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey,
@@ -59,39 +40,26 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: ScopedModelDescendant<CartModel>(
-                            builder: (context, child, cart) {
-                          return ListView(
-                            padding: const EdgeInsets.only(bottom: 130),
-                            children: [
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 1,
-                                      price: 7.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 600ml Zero',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 2,
-                                      price: 12.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 1l Garrafa',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 3,
-                                      price: 18.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 2l descartável',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                            ],
-                          );
-                        }),
-                      )
+                          child: ScopedModel.of<CartModel>(context,
+                                          rebuildOnChange: true)
+                                      .cart
+                                      .length ==
+                                  0
+                              ? Center(
+                                  child: Text("No items in Cart"),
+                                )
+                              : ListView.builder(
+                                  itemCount: ScopedModel.of<CartModel>(context,
+                                          rebuildOnChange: true)
+                                      .total,
+                                  itemBuilder: (context, index) {
+                                    return ScopedModelDescendant<CartModel>(
+                                        builder: (context, child, model) {
+                                      return ProductCardListTileWidget(
+                                        cart: model,
+                                        product: model.cart[index]);
+                                    });
+                                  }))
                     ],
                   ),
                 ),
@@ -120,21 +88,26 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: Text(
-                          'CANCELAR PEDIDO',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(2.0, 2.0),
-                                blurRadius: 1.0,
-                                color: Colors.black,
-                              ),
-                            ],
+                      child: Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/home');
+                          },
+                          child: const Text(
+                            'Voltar',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(2.0, 2.0),
+                                  blurRadius: 1.0,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -161,11 +134,11 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushNamed(context, '/cart')
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/payment');
                             },
                             child: const Text(
-                              'CONFERIR PEDIDO',
+                              'Pagar',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -187,56 +160,6 @@ class HomePage extends StatelessWidget {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryCardListTileWidget extends StatelessWidget {
-  const CategoryCardListTileWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(14),
-      padding: const EdgeInsets.only(bottom: 20),
-      height: 220,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        image: const DecorationImage(
-          image: AssetImage('assets/images/cat_refri.jpg'),
-          fit: BoxFit.cover,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: const Align(
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          'REFRIGERANTES',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(2.0, 2.0),
-                blurRadius: 1.0,
-                color: Colors.black,
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -288,7 +211,7 @@ class ProductCardListTileWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 7,
-            child: Text('${product.title} R\$ ${product.price}',
+            child: Text('${product.qty}x ${product.title} R\$ ${product.price}\n(R\$ ${product.qty * product.price})',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
           ),
@@ -297,9 +220,41 @@ class ProductCardListTileWidget extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {cart.addProduct(product)},
+                onPressed: () => {
+                  cart.updateProduct(product, product.qty + 1)
+                },
                 child: const Icon(
                   Icons.add_box_outlined,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: SizedBox(
+              height: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => {
+                  cart.updateProduct(product, product.qty - 1)
+                },
+                child: const Icon(
+                  Icons.remove_circle_outline,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: SizedBox(
+              height: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => {
+                  cart.removeProduct(product)
+                },
+                child: const Icon(
+                  Icons.delete_outline_outlined,
                   size: 50,
                 ),
               ),
