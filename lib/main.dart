@@ -18,21 +18,21 @@ import 'cartmodel.dart';
 void main() {
   service_locator.init();
   runApp(MyApp(
-    model: CartModel(),
+    cart: CartModel(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final CartModel model;
+  final CartModel cart;
 
-  const MyApp({Key? key, required this.model}) : super(key: key);
+  const MyApp({Key? key, required this.cart}) : super(key: key);
 
   static bool isAdmin = true;
 
   @override
   Widget build(BuildContext context) {
     return ScopedModel<CartModel>(
-      model: model,
+      model: cart,
       child: GetMaterialApp(
         title: 'Auto-Atendimento',
         theme: ThemeData(

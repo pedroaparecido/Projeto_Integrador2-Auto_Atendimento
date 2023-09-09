@@ -9,9 +9,10 @@ class CartModel extends Model {
   void addProduct(product) {
     int index = cart.indexWhere((i) => i.id == product.id);
     print(index);
-    if (index != -1)
-      updateProduct(product, product.qty + 1);
-    else {
+    if (index != -1) {
+      var current_qty = cart[index].qty;
+      updateProduct(product, product.qty + current_qty);
+    } else {
       cart.add(product);
       calculateTotal();
       notifyListeners();
@@ -29,8 +30,7 @@ class CartModel extends Model {
   void updateProduct(product, qty) {
     int index = cart.indexWhere((i) => i.id == product.id);
     cart[index].qty = qty;
-    if (cart[index].qty == 0)
-      removeProduct(product);
+    if (cart[index].qty == 0) removeProduct(product);
 
     calculateTotal();
     notifyListeners();
@@ -47,6 +47,8 @@ class CartModel extends Model {
     cart.forEach((f) {
       totalCartValue += f.price * f.qty;
     });
+
+    print('total ${totalCartValue}');
   }
 }
 
@@ -57,11 +59,10 @@ class Product {
   double price;
   int qty;
 
-  Product({
-    required this.id, 
-    required this.title, 
-    required this.price, 
-    required this.qty, 
-    required this.imgUrl
-  });
+  Product(
+      {required this.id,
+      required this.title,
+      required this.price,
+      required this.qty,
+      required this.imgUrl});
 }

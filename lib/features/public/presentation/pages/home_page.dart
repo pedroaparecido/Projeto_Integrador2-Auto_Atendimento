@@ -1,4 +1,6 @@
+import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -57,21 +59,38 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.only(bottom: 130),
-                          children: const [
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                            ProductCardListTileWidget(),
-                          ],
-                        ),
+                        child: ScopedModelDescendant<CartModel>(
+                            builder: (context, child, cart) {
+                          return ListView(
+                            padding: const EdgeInsets.only(bottom: 130),
+                            children: [
+                              ProductCardListTileWidget(
+                                  cart: cart,
+                                  product: Product(
+                                      id: 1,
+                                      price: 7.99,
+                                      qty: 1,
+                                      title: 'Coca-Cola 600ml Zero',
+                                      imgUrl: 'assets/images/cat_refri.jpg')),
+                              ProductCardListTileWidget(
+                                  cart: cart,
+                                  product: Product(
+                                      id: 2,
+                                      price: 12.99,
+                                      qty: 1,
+                                      title: 'Coca-Cola 1l Garrafa',
+                                      imgUrl: 'assets/images/cat_refri.jpg')),
+                              ProductCardListTileWidget(
+                                  cart: cart,
+                                  product: Product(
+                                      id: 3,
+                                      price: 18.99,
+                                      qty: 1,
+                                      title: 'Coca-Cola 2l descartável',
+                                      imgUrl: 'assets/images/cat_refri.jpg')),
+                            ],
+                          );
+                        }),
                       )
                     ],
                   ),
@@ -221,9 +240,12 @@ class CategoryCardListTileWidget extends StatelessWidget {
 }
 
 class ProductCardListTileWidget extends StatelessWidget {
-  const ProductCardListTileWidget({
-    super.key,
-  });
+  final CartModel cart;
+  final Product product;
+
+  const ProductCardListTileWidget(
+      {Key? key, required this.cart, required this.product})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -244,8 +266,8 @@ class ProductCardListTileWidget extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/cat_refri.jpg'),
+                image: DecorationImage(
+                  image: AssetImage(product.imgUrl),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -260,17 +282,20 @@ class ProductCardListTileWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 7,
-            child: Text('Coca-Cola 600ml Zero       R\$ 12,99 ',
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
+            child: Text('${product.title} R\$ ${product.price}',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
           ),
           Expanded(
             flex: 2,
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => {
+                  cart.addProduct(product)
+                },
                 child: const Icon(
                   Icons.add_box_outlined,
                   size: 50,
