@@ -6,12 +6,14 @@ class OrderModel extends OrderEntity {
   OrderModel({
     super.id,
     required super.total,
+    required super.products
   });
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
       id: map['id'] as int,
       total: map['total'],
+      products: []
     );
   }
 

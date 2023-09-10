@@ -1,16 +1,18 @@
+import 'package:atendimento_automatico/features/product/domain/entities/order_product_entity.dart';
+
 class OrderEntity {
   OrderEntity({
     this.id,
-    //required this.products,
+    required this.products,
     required this.total,
   });
 
   int? id;
-  //List<ProductEntity> products;
+  List<OrderProductEntity> products;
   double total;
 
   @override
   String toString() {
-    return 'OrderEntity(id: $id, total: $total)';
+    return 'OrderEntity(id: $id, total: $total, products: $products)';
   }
 }

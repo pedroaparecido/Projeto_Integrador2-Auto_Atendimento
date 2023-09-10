@@ -1,6 +1,7 @@
 import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:atendimento_automatico/features/product/domain/entities/order_entity.dart';
+import 'package:atendimento_automatico/features/product/domain/entities/order_product_entity.dart';
 import 'package:atendimento_automatico/features/product/presentation/controllers/order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,9 @@ class _ProcessingPaymentPageState extends State<ProcessingPaymentPage>
               if (!orderInserted) {
                 orderInserted = true;
                 _orderController
-                    .insertOrder(OrderEntity(total: 123))
+                    .insertOrder(OrderEntity(
+                      total: cart.totalCartValue, 
+                      products: cart.cart.map((e) => OrderProductEntity(productId: e.id, quantity: e.qty)).toList()))
                     .then((value) {
                   cart.id = _orderController.orders.first.id;
                   Navigator.popAndPushNamed(context, RouteConfig.statusPayment);

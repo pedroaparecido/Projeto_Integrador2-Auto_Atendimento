@@ -30,4 +30,16 @@ class OrderGqlModel {
     }
   }
 }''';
+
+  String insertProducts(int orderId, OrderEntity order) => '''mutation {
+  insert_order_product(
+    objects: [
+      ${order.products.map((product) => '{order_id: $orderId, product_id: ${product.productId}, quantity: ${product.quantity}}').join(', ')}
+    ]) {
+    returning {
+      order_id
+      product_id
+    }
+  }
+}''';
 }

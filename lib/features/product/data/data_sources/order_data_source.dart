@@ -24,9 +24,14 @@ class OrderDataSourceImpl implements OrderDataSource {
 
   @override
   Future<OrderEntity> insert({required OrderEntity order}) async {
-    final res = await _graphqlService.mutationGql(
+    final res1 = await _graphqlService.mutationGql(
         mutationQuery: OrderGqlModel().insert(order));
 
-    return OrderModel.fromMap(res['insert_order']['returning'][0]);
+    OrderEntity updatedOrder = OrderModel.fromMap(res1['insert_order']['returning'][0]);
+
+    await _graphqlService.mutationGql(
+        mutationQuery: OrderGqlModel().insertProducts(updatedOrder.id!, order));
+
+    return updatedOrder;
   }
 }
