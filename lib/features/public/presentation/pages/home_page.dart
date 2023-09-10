@@ -1,6 +1,8 @@
 import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
+import 'package:atendimento_automatico/core/helpers/regularize_helper.dart';
 import 'package:atendimento_automatico/features/product/domain/entities/product_category_entity.dart';
+import 'package:atendimento_automatico/features/product/domain/entities/product_entity.dart';
 import 'package:atendimento_automatico/features/product/presentation/controllers/product_category_dropdown_controller.dart';
 import 'package:atendimento_automatico/features/product/presentation/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +42,10 @@ class HomePage extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 130),
                               itemBuilder: (context, index) {
                                 return CategoryCardListTileWidget(
-                                    category: _categoryController.productCategories
-                                    .elementAt(index));
+                                    category: _categoryController
+                                        .productCategories
+                                        .elementAt(index),
+                                        onPressed: (value) => _productController.getByCategory(value.id!),);
                               }))),
                 ),
                 Expanded(
@@ -69,38 +73,27 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: ScopedModelDescendant<CartModel>(
+                        child: Obx(() => _productController.isLoading.value
+                          ? const SizedBox(
+                              height: 320,
+                              child: Center(
+                                  child: SizedBox(
+                                      height: 100,
+                                      child: Text('Carregando produtos...'))))
+                          : ScopedModelDescendant<CartModel>(
                             builder: (context, child, cart) {
-                          return ListView(
-                            padding: const EdgeInsets.only(bottom: 130),
-                            children: [
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 1,
-                                      price: 7.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 600ml Zero',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 2,
-                                      price: 12.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 1l Garrafa',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                              ProductCardListTileWidget(
-                                  cart: cart,
-                                  product: Product(
-                                      id: 3,
-                                      price: 18.99,
-                                      qty: 1,
-                                      title: 'Coca-Cola 2l descartável',
-                                      imgUrl: 'assets/images/cat_refri.jpg')),
-                            ],
-                          );
-                        }),
+                          return ListView.builder(
+                              itemCount:
+                                  _productController.products.length,
+                              padding: const EdgeInsets.only(bottom: 130),
+                              itemBuilder: (context, index) {
+                                return ProductCardListTileWidget(
+                                    cart: cart,
+                                    product: _productController
+                                        .products
+                                        .elementAt(index),);
+                              });
+                        })),
                       )
                     ],
                   ),
@@ -206,11 +199,11 @@ class HomePage extends StatelessWidget {
 
 class CategoryCardListTileWidget extends StatelessWidget {
   final ProductCategoryEntity category;
+  final void Function(ProductCategoryEntity value) onPressed;
 
-  const CategoryCardListTileWidget({
-    Key? key,
-    required this.category,
-  }) : super(key: key);
+  const CategoryCardListTileWidget(
+      {Key? key, required this.category, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -236,20 +229,25 @@ class CategoryCardListTileWidget extends StatelessWidget {
       ),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: Text(
-          category.name,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(2.0, 2.0),
-                blurRadius: 1.0,
-                color: Colors.black,
-              ),
-            ],
+        child: ElevatedButton(
+          onPressed: () {
+            onPressed(category);
+          },
+          child: Text(
+            category.name,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              shadows: <Shadow>[
+                Shadow(
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 1.0,
+                  color: Colors.black,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -259,7 +257,7 @@ class CategoryCardListTileWidget extends StatelessWidget {
 
 class ProductCardListTileWidget extends StatelessWidget {
   final CartModel cart;
-  final Product product;
+  final ProductEntity product;
 
   const ProductCardListTileWidget(
       {Key? key, required this.cart, required this.product})
@@ -285,7 +283,10 @@ class ProductCardListTileWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
-                  image: AssetImage(product.imgUrl),
+                  image: Image.memory(
+                    product.image,
+                    fit: BoxFit.fitHeight,
+                  ).image,
                   fit: BoxFit.cover,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -302,7 +303,7 @@ class ProductCardListTileWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 7,
-            child: Text('${product.title} R\$ ${product.price}',
+            child: Text('${product.name} ${RegularizeHelper.doubleToRealCurrency(value: product.price)}',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
           ),
@@ -311,7 +312,12 @@ class ProductCardListTileWidget extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {cart.addProduct(product)},
+                onPressed: () => {cart.addProduct(Product(
+                  id: product.id!, 
+                  title: product.name, 
+                  price: product.price, 
+                  qty: 1, 
+                  image: product.image))},
                 child: const Icon(
                   Icons.add_box_outlined,
                   size: 50,

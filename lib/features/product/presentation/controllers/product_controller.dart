@@ -27,8 +27,8 @@ class ProductController extends GetxController {
   Uint8List? imageFileSelected;
 
   @override
-  void onInit() async {
-    await getAllProduct();
+  void onInit() {
+    // await getAllProduct();
     super.onInit();
   }
 

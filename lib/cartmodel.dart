@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:scoped_model/scoped_model.dart';
 
 class CartModel extends Model {
@@ -52,7 +54,7 @@ class CartModel extends Model {
 class Product {
   int id;
   String title;
-  String imgUrl;
+  Uint8List image;
   double price;
   int qty;
 
@@ -61,5 +63,5 @@ class Product {
       required this.title,
       required this.price,
       required this.qty,
-      required this.imgUrl});
+      required this.image});
 }

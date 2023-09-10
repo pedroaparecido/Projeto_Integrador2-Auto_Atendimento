@@ -1,5 +1,6 @@
 import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
+import 'package:atendimento_automatico/core/helpers/regularize_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -197,7 +198,10 @@ class ProductCardListTileWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
-                  image: AssetImage(product.imgUrl),
+                  image: Image.memory(
+                    product.image,
+                    fit: BoxFit.fitHeight,
+                  ).image,
                   fit: BoxFit.cover,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -214,7 +218,7 @@ class ProductCardListTileWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 7,
-            child: Text('${product.qty}x ${product.title} R\$ ${product.price}\n(R\$ ${product.qty * product.price})',
+            child: Text('${product.qty}x ${product.title} ${RegularizeHelper.doubleToRealCurrency(value: product.price)}\n(${RegularizeHelper.doubleToRealCurrency(value: product.qty * product.price)})',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
           ),
