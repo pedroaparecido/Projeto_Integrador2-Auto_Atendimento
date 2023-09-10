@@ -1,3 +1,4 @@
+import 'package:atendimento_automatico/features/product/order_locator.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,6 +15,7 @@ void init() {
   ProductLocator.init(sl);
   CompanyLocator.init(sl);
   BannersLocator.init(sl);
+  OrderLocator.init(sl);
 
   //#### inicialização dos controllers GetX singletons
   Get.put(CompanyPublicController());

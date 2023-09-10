@@ -1,5 +1,7 @@
+import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class StatusPaymentPage extends StatelessWidget {
   const StatusPaymentPage({super.key});
@@ -14,36 +16,38 @@ class StatusPaymentPage extends StatelessWidget {
           },
         ),
         builder: (context, snapshot) {
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Pagamento efetuado com sucesso!',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textScaleFactor: 2,
-                ),
-                const SizedBox(height: 50),
-                Text(
-                  'O Rei do Espeto Agradeçe a sua preferência!',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textScaleFactor: 2,
-                ),
-                const SizedBox(height: 50),
-                Text(
-                  'O número do seu pedido é',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textScaleFactor: 3,
-                ),
-                const SizedBox(height: 50),
-                Text(
-                  '1234',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textScaleFactor: 6,
-                ),
-                const SizedBox(height: 50),
-                Image.asset('assets/images/aprovado.jpg',
-                    height: 200, width: 200),
-              ]);
+          return ScopedModelDescendant<CartModel>(builder: (context, child, cart) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Pagamento efetuado com sucesso!',
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textScaleFactor: 2,
+                  ),
+                  const SizedBox(height: 50),
+                  Text(
+                    'O Rei do Espeto Agradeçe a sua preferência!',
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textScaleFactor: 2,
+                  ),
+                  const SizedBox(height: 50),
+                  Text(
+                    'O número do seu pedido é',
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textScaleFactor: 3,
+                  ),
+                  const SizedBox(height: 50),
+                  Text(
+                    "${cart.id}",
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textScaleFactor: 6,
+                  ),
+                  const SizedBox(height: 50),
+                  // Image.asset('assets/images/aprovado.jpg',
+                  //     height: 200, width: 200),
+                ]);
+          });
         });
   }
 }

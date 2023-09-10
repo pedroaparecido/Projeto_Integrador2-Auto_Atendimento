@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:scoped_model/scoped_model.dart';
 
 class CartModel extends Model {
+  int? id;
   List<Product> cart = [];
   double totalCartValue = 0;
 
