@@ -1,4 +1,4 @@
-import 'package:atendimento_automatico/features/product/order_locator.dart';
+import 'package:atendimento_automatico/features/order/order_locator.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 

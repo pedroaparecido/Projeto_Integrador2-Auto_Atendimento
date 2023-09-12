@@ -5,7 +5,7 @@ import '../configs/route_config.dart';
 
 final menuListButtons = [
   TextButton(
-      onPressed: () => Get.offNamed(RouteConfig.home),
+      onPressed: () => Get.offNamed(RouteConfig.cartPage),
       child: const Text(
         'Produtos',
         style: TextStyle(

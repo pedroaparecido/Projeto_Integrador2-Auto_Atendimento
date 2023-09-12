@@ -10,8 +10,7 @@ class OrderRepositoryImpl implements OrderRepository {
   final OrderDataSource _dataSource;
 
   @override
-  Future<Either<Exception, OrderEntity>> insert(
-      {required OrderEntity order}) async {
+  Future<Either<Exception, OrderEntity>> insert({required OrderEntity order}) async {
     try {
       final res = await _dataSource.insert(order: order);
       return Right(res);
@@ -26,8 +25,7 @@ class OrderRepositoryImpl implements OrderRepository {
       final res = await _dataSource.getByStatus(status);
       return Right(res);
     } catch (err) {
-      return Left(Exception(
-          'Não foi possível buscar os pedidos por estado\nERRO: $err'));
+      return Left(Exception('Não foi possível buscar os pedidos por estado\nERRO: $err'));
     }
   }
 }

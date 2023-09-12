@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PublicBodyWidget extends StatelessWidget {
-  const PublicBodyWidget({
+class CartBodyWidget extends StatelessWidget {
+  const CartBodyWidget({
     super.key,
     required this.children,
   });

@@ -1,11 +1,15 @@
-import 'package:atendimento_automatico/cartmodel.dart';
 import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:atendimento_automatico/core/helpers/regularize_helper.dart';
-import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:atendimento_automatico/features/cart/domain/entities/cart_itens_entity.dart';
+import 'package:atendimento_automatico/features/cart/presentation/controllers/cart_controllers.dart';
 
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class CartDetailPage extends StatelessWidget {
+  CartDetailPage({super.key});
+
+  final _cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +46,20 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                          child: ScopedModel.of<CartModel>(context,
-                                          rebuildOnChange: true)
-                                      .cart
-                                      .isEmpty
-                              ? const Center(
-                                  child: Text("No items in Cart"),
-                                )
-                              : ListView.builder(
-                                  itemCount: ScopedModel.of<CartModel>(context,
-                                          rebuildOnChange: true)
-                                      .total,
+                        child: _cartController.itemsCart.isEmpty
+                            ? const Center(
+                                child: Text("Não exite produtos no carrinho...."),
+                              )
+                            : Obx(
+                                () => ListView.builder(
+                                  itemCount: _cartController.itemsCart.length,
                                   itemBuilder: (context, index) {
-                                    return ScopedModelDescendant<CartModel>(
-                                        builder: (context, child, model) {
-                                      return ProductCardListTileWidget(
-                                        cart: model,
-                                        product: model.cart[index]);
-                                    });
-                                  }))
+                                    final item = _cartController.itemsCart[index];
+                                    return ProductDetailCardListTileWidget(indexItem: index, item: item);
+                                  },
+                                ),
+                              ),
+                      )
                     ],
                   ),
                 ),
@@ -91,9 +90,7 @@ class CartPage extends StatelessWidget {
                       ),
                       child: Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.popAndPushNamed(context, RouteConfig.home);
-                          },
+                          onPressed: Get.back,
                           child: const Text(
                             'Voltar',
                             textAlign: TextAlign.center,
@@ -134,17 +131,15 @@ class CartPage extends StatelessWidget {
                         ],
                       ),
                       child: Center(
-                        child: ElevatedButton(
-                            onPressed: () {
-                              ScopedModel.of<CartModel>(context,
-                                          rebuildOnChange: true).cart.isEmpty ? null :
-                              Navigator.popAndPushNamed(context, RouteConfig.paymentType);
-                            },
-                            child: Text(
-                              ScopedModel.of<CartModel>(context,
-                                          rebuildOnChange: true).cart.isEmpty ? 'TODO ' : 'Pagar',
+                        child: Obx(
+                          () => ElevatedButton(
+                            onPressed: _cartController.itemsCart.isEmpty
+                                ? null
+                                : () => Navigator.popAndPushNamed(context, RouteConfig.paymentType),
+                            child: const Text(
+                              'Pagar',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,
@@ -156,7 +151,9 @@ class CartPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -170,13 +167,12 @@ class CartPage extends StatelessWidget {
   }
 }
 
-class ProductCardListTileWidget extends StatelessWidget {
-  final CartModel cart;
-  final Product product;
+class ProductDetailCardListTileWidget extends StatelessWidget {
+  ProductDetailCardListTileWidget({super.key, required this.indexItem, required this.item});
+  final int indexItem;
+  final CartItemsEntity item;
 
-  const ProductCardListTileWidget(
-      {Key? key, required this.cart, required this.product})
-      : super(key: key);
+  final _cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +195,7 @@ class ProductCardListTileWidget extends StatelessWidget {
                 color: Colors.white,
                 image: DecorationImage(
                   image: Image.memory(
-                    product.image,
+                    item.product.image,
                     fit: BoxFit.fitHeight,
                   ).image,
                   fit: BoxFit.cover,
@@ -218,18 +214,18 @@ class ProductCardListTileWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 7,
-            child: Text('${product.qty}x ${product.title} ${RegularizeHelper.doubleToRealCurrency(value: product.price)}\n(${RegularizeHelper.doubleToRealCurrency(value: product.qty * product.price)})',
+            child: Text(
+                '${item.getQntyItem} x ${item.product.name} ${RegularizeHelper.doubleToRealCurrency(value: item.product.price)}\n(${RegularizeHelper.doubleToRealCurrency(value: item.totalValueItens)})',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
           ),
           Expanded(
             flex: 2,
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {
-                  cart.updateProduct(product, product.qty + 1)
-                },
+                // onPressed: () => {cart.updateProduct(product, product.qty + 1)},
+                onPressed: item.addProduct,
                 child: const Icon(
                   Icons.add_box_outlined,
                   size: 50,
@@ -242,9 +238,8 @@ class ProductCardListTileWidget extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {
-                  cart.updateProduct(product, product.qty - 1)
-                },
+                // onPressed: () => {cart.updateProduct(product, product.qty - 1)},
+                onPressed: item.removeProduct,
                 child: const Icon(
                   Icons.remove_circle_outline,
                   size: 50,
@@ -257,9 +252,8 @@ class ProductCardListTileWidget extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {
-                  cart.removeProduct(product)
-                },
+                // onPressed: () => {cart.removeProduct(product)},
+                onPressed: () => _cartController.removeItemCart(indexItem),
                 child: const Icon(
                   Icons.delete_outline_outlined,
                   size: 50,

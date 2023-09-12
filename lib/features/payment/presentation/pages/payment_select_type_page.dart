@@ -1,8 +1,8 @@
 import 'package:atendimento_automatico/core/configs/route_config.dart';
 import 'package:flutter/material.dart';
 
-class PaymentTypePage extends StatelessWidget {
-  const PaymentTypePage({super.key});
+class PaymentSelectTypePage extends StatelessWidget {
+  const PaymentSelectTypePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +62,7 @@ class PaymentTypePage extends StatelessWidget {
 class PaymentTypeListTileWidget extends StatelessWidget {
   final String text;
 
-  const PaymentTypeListTileWidget({Key? key, required this.text})
-      : super(key: key);
+  const PaymentTypeListTileWidget({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +81,7 @@ class PaymentTypeListTileWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => {Navigator.popAndPushNamed(context, RouteConfig.processingPayment)},
               child: Text(text,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.w600)),
+                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
             ),
           ),
         ]),

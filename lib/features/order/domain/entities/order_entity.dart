@@ -1,4 +1,4 @@
-import 'package:atendimento_automatico/features/product/domain/entities/order_product_entity.dart';
+import 'package:atendimento_automatico/features/order/domain/entities/order_product_entity.dart';
 
 class OrderEntity {
   OrderEntity({
@@ -9,7 +9,8 @@ class OrderEntity {
 
   int? id;
   List<OrderProductEntity> products;
-  double total;
+
+  double total; // transformar metodo que pega a lista e retorna o total
 
   @override
   String toString() {

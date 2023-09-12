@@ -9,7 +9,7 @@ class DialogWidget {
             title: 'Opsss!!!!!',
             middleText: message != null ? message.replaceAll('Exception: ', '') : 'Operação não executada!',
             barrierDismissible: false,
-            backgroundColor: Colors.blue.withOpacity(0.8),
+            backgroundColor: Colors.orange,
             confirm: ElevatedButton(onPressed: Get.back, child: const Text('OK')));
   }
 }

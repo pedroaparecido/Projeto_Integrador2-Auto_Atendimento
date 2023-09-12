@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../company/presentation/controllers/company_public_controller.dart';
-import '../widgets/public_body_widget.dart';
+import '../../../cart/presentation/widgets/cart_body_widget.dart';
 import '../widgets/public_menu_drawer_widget.dart';
 import '../widgets/public_title_sub_pages_widget.dart';
 
@@ -15,7 +15,7 @@ class AboutPage extends StatelessWidget {
 
     return Scaffold(
       drawer: const PublicMenuDrawerWidget(),
-      body: PublicBodyWidget(
+      body: CartBodyWidget(
         children: [
           const SizedBox(height: 50),
           const PublicTitleSubPagesWidget(

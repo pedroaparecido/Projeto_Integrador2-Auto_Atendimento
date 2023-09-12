@@ -1,5 +1,5 @@
-import 'package:atendimento_automatico/features/product/domain/entities/order_entity.dart';
-import 'package:atendimento_automatico/features/product/domain/repositories/order_repository.dart';
+import 'package:atendimento_automatico/features/order/domain/entities/order_entity.dart';
+import 'package:atendimento_automatico/features/order/domain/repositories/order_repository.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/widgets/dialog_widget.dart';

@@ -1,4 +1,4 @@
-import '../../domain/entities/order_entity.dart';
+import '../../../order/domain/entities/order_entity.dart';
 
 class OrderGqlModel {
   static String orderQuery = '''
@@ -6,9 +6,7 @@ class OrderGqlModel {
             total''';
 
   static String get({int? status}) {
-    final whereByStatus = status != null && status != 999
-        ? 'where: {status: {_eq: $status}},'
-        : '';
+    final whereByStatus = status != null && status != 999 ? 'where: {status: {_eq: $status}},' : '';
 
     return '''query {
           order(
@@ -20,7 +18,8 @@ class OrderGqlModel {
         }''';
   }
 
-  String insert(OrderEntity order) => '''mutation {
+  String insert(OrderEntity order) =>
+      '''mutation {
   insert_order(
     objects: {
       total: ${order.total}
@@ -31,7 +30,8 @@ class OrderGqlModel {
   }
 }''';
 
-  String insertProducts(int orderId, OrderEntity order) => '''mutation {
+  String insertProducts(int orderId, OrderEntity order) =>
+      '''mutation {
   insert_order_product(
     objects: [
       ${order.products.map((product) => '{order_id: $orderId, product_id: ${product.productId}, quantity: ${product.quantity}}').join(', ')}

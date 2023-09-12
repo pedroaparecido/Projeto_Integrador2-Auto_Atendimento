@@ -1,5 +1,6 @@
 class RouteConfig {
-  static const String home = '/home';
+  static const String cartPage = '/cart-page';
+  static const String cartDetail = '/cart-detail';
   static const String contact = '/contact';
   static const String about = '/about';
   static const String product = '/product';
@@ -13,7 +14,6 @@ class RouteConfig {
   static const String dashboard = '/dashboard';
   static const String companyPage = '/company';
   static const String companyRegister = '/company-register';
-  static const String cart = '/cart';
   static const String processingPayment = '/processing-payment';
   static const String statusPayment = '/status-payment';
   static const String paymentType = '/payment-type';

@@ -46,7 +46,7 @@ class AdminMenuDrawerWidget extends StatelessWidget {
           ListTile(
               leading: const Icon(Icons.output_rounded),
               title: const Text('Sair'),
-              onTap: () => Get.offNamed(RouteConfig.home)),
+              onTap: () => Get.offNamed(RouteConfig.cartPage)),
         ],
       ),
     );
