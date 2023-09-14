@@ -10,7 +10,9 @@ class ProductCategoryGqlModel {
 
   static String insert(String name) => '''mutation {
   insert_product_category(
-    objects: {name: "$name"}) 
+    objects: {
+      name: "$name",
+      }) 
     {
     returning {
       id

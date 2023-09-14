@@ -10,7 +10,7 @@ class CartItemsEntity {
   double get totalValueItens => product.price * _qnty;
 
   addProduct() => _qnty += 1;
-  removeProduct() => _qnty > 0 ? _qnty - 1 : 0;
+  removeProduct() => _qnty > 0 ? _qnty -= 1 : 0;
 
   @override
   bool operator ==(covariant CartItemsEntity other) {

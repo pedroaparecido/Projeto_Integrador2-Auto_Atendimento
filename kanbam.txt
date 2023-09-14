@@ -1,0 +1,11 @@
+Tarefas - Pedro:
+
+ Categorias :: product_category 
+ (Admin):
+    - Pedir para Sr.a Ane adicionar na tabela "product_category" a coluna "image" type "Text" e não pode ser "Nula";
+    - Adicionar no layout de cadastro campo de "imagem" igual no esta no cadastro de "produtos";
+        * Arquivos a serem alterados: entities, models, data source (insert);
+
+ (Front):
+    - Refatorar lista de categorias para receber a imagem da API;
+

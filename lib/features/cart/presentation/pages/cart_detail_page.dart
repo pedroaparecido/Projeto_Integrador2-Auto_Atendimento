@@ -70,33 +70,33 @@ class CartDetailPage extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
-                            spreadRadius: 5,
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
+                    child: InkWell(
+                      onTap: Get.back,
+                      child: Container(
+                        width: double.infinity,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            // topRight: Radius.circular(25),
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: ElevatedButton(
-                          onPressed: Get.back,
-                          child: const Text(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.4),
+                              spreadRadius: 5,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Text(
                             'Voltar',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 40,
+                              fontSize: 50,
                               fontWeight: FontWeight.bold,
                               shadows: <Shadow>[
                                 Shadow(
@@ -115,33 +115,83 @@ class CartDetailPage extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
-                            spreadRadius: 5,
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
+                      color: Colors.blue,
                       child: Center(
-                        child: Obx(
-                          () => ElevatedButton(
-                            onPressed: _cartController.itemsCart.isEmpty
-                                ? null
-                                : () => Navigator.popAndPushNamed(context, RouteConfig.paymentType),
-                            child: const Text(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Total Pedido',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Obx(
+                              () => Text(
+                                _cartController.valueTotalItems.value == -0.00
+                                    ? 'R\$ 0,00'
+                                    : RegularizeHelper.doubleToRealCurrency(
+                                        value: _cartController.valueTotalItems.value),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(2.0, 2.0),
+                                      blurRadius: 1.0,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Obx(
+                      () => InkWell(
+                        onTap: _cartController.itemsCart.isEmpty
+                            ? null
+                            : () => Navigator.popAndPushNamed(context, RouteConfig.paymentType),
+                        child: Container(
+                          width: double.infinity,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: _cartController.itemsCart.isEmpty ? Colors.grey : Colors.green,
+                            borderRadius: const BorderRadius.only(
+                              // topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.4),
+                                spreadRadius: 5,
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Text(
                               'Pagar',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 40,
+                                fontSize: 60,
                                 fontWeight: FontWeight.bold,
                                 shadows: <Shadow>[
                                   Shadow(
@@ -186,6 +236,30 @@ class ProductDetailCardListTileWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
         child: Row(children: [
+          Column(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => _cartController.incrementItem(item),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Icon(Icons.add_box_outlined, size: 50),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => _cartController.decrementItem(item),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                    child: const Icon(Icons.remove_circle_outline, size: 50),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Expanded(
             flex: 3,
             child: Container(
@@ -214,50 +288,32 @@ class ProductDetailCardListTileWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 7,
-            child: Text(
-                '${item.getQntyItem} x ${item.product.name} ${RegularizeHelper.doubleToRealCurrency(value: item.product.price)}\n(${RegularizeHelper.doubleToRealCurrency(value: item.totalValueItens)})',
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
-          ),
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              height: double.infinity,
-              child: ElevatedButton(
-                // onPressed: () => {cart.updateProduct(product, product.qty + 1)},
-                onPressed: item.addProduct,
-                child: const Icon(
-                  Icons.add_box_outlined,
-                  size: 50,
-                ),
+            child: ListTile(
+              title: Text(
+                item.product.name,
+                style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Obx(
+                () => _cartController.refreshTotalItems.value
+                    ? Container()
+                    : Text(
+                        '\n${item.getQntyItem.toString().padLeft(2, '0')} x ${RegularizeHelper.doubleToRealCurrency(value: item.product.price)}'
+                        '\nSub Total: ${RegularizeHelper.doubleToRealCurrency(value: item.totalValueItens)}',
+                        style: const TextStyle(fontSize: 20),
+                        overflow: TextOverflow.ellipsis,
+                      ),
               ),
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: SizedBox(
               height: double.infinity,
               child: ElevatedButton(
-                // onPressed: () => {cart.updateProduct(product, product.qty - 1)},
-                onPressed: item.removeProduct,
-                child: const Icon(
-                  Icons.remove_circle_outline,
-                  size: 50,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              height: double.infinity,
-              child: ElevatedButton(
-                // onPressed: () => {cart.removeProduct(product)},
                 onPressed: () => _cartController.removeItemCart(indexItem),
-                child: const Icon(
-                  Icons.delete_outline_outlined,
-                  size: 50,
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: const Icon(Icons.delete_outline_outlined, size: 50),
               ),
             ),
           ),
