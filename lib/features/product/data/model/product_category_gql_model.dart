@@ -5,6 +5,7 @@ class ProductCategoryGqlModel {
     product_category {
       id
       name
+      image
     }
 }''';
 

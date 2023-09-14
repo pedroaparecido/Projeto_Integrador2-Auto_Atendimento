@@ -19,8 +19,11 @@ class ProductCategoryCardListTileWidget extends StatelessWidget {
         height: 220,
         decoration: BoxDecoration(
           color: Colors.white,
-          image: const DecorationImage(
-            image: AssetImage('assets/images/cat_refri.jpg'),
+          image: DecorationImage(
+            image: Image.memory(
+                    category.image,
+                    fit: BoxFit.fitHeight,
+                  ).image,
             fit: BoxFit.cover,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(12)),

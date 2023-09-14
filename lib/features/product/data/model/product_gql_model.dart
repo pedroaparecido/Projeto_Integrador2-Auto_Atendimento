@@ -9,6 +9,7 @@ class ProductGqlModel {
             product_category {
               id
               name
+              image
             }
             name
             description

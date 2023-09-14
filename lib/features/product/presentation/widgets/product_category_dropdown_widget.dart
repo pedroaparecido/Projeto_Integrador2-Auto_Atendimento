@@ -41,7 +41,7 @@ class ProductCategoryDropdownWidget extends StatelessWidget {
                   items: [
                     if (addAllCategory)
                       DropdownMenuItem<ProductCategoryEntity>(
-                        value: ProductCategoryEntity(id: 999, name: 'Todas'),
+                        value: ProductCategoryEntity(id: 999, name: 'Todas', image: null!),
                         child: const FittedBox(fit: BoxFit.fitWidth, child: Text('Todas')),
                       ),
                     ..._controller.productCategories.map(
