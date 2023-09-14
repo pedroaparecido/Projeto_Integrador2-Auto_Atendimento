@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  postgres-aa-db:
+    container_name: postgres-aa-db
+    image: postgres:15.4-alpine3.18
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '7432:5432'
+
+  flyway-aa:
+    container_name: flyway-aa
+    image: flyway/flyway:9.22.1-alpine
+    command: -url=jdbc:postgresql://postgres-aa-db:5432/postgres -user=postgres -password=postgres -connectRetries=10 migrate
+    volumes:
+      - .:/flyway/sql
+    depends_on:
+      - postgres-aa-db

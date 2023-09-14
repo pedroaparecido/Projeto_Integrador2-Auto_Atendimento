@@ -1,0 +1,1 @@
+docker compose -p atendimento-automatico up -d
