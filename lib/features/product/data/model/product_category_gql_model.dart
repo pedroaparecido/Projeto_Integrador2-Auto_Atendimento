@@ -1,6 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:atendimento_automatico/core/services/image_service.dart';
+import 'package:atendimento_automatico/service_locator.dart';
+
 import '../../domain/entities/product_category_entity.dart';
 
 class ProductCategoryGqlModel {
+  final _imageService = sl<ImageService>();
+
   static String get() => '''query {
     product_category {
       id
@@ -9,15 +16,17 @@ class ProductCategoryGqlModel {
     }
 }''';
 
-  static String insert(String name) => '''mutation {
+  String insert(String name, Uint8List image) => '''mutation {
   insert_product_category(
     objects: {
       name: "$name",
+      image: "${_imageService.encoderImage(image)}"
       }) 
     {
     returning {
       id
       name
+      image
     }
   }
 }''';

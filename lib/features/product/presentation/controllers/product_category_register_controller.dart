@@ -34,7 +34,8 @@ class ProductCategoryRegisterController extends GetxController {
 
   Future<void> insertProductCategory(String name) async {
     isLoading.value = true;
-    final res = await _productCategoryRepository.insert(name: name);
+    final res = await _productCategoryRepository.insert(
+        name: name, image: imageFileSelected!);
     res.fold(
       (l) => DialogWidget.feedback(result: false, message: l.toString()),
       (r) {
