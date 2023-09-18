@@ -1,0 +1,1 @@
+ALTER TABLE public.order ADD date_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
