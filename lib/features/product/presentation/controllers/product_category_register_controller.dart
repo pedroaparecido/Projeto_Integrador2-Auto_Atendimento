@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:atendimento_automatico/core/services/image_service.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/widgets/dialog_widget.dart';
@@ -7,16 +10,26 @@ import '../../domain/repositories/product_category_repository.dart';
 
 class ProductCategoryRegisterController extends GetxController {
   final _productCategoryRepository = sl<ProductCategoryRepository>();
+  final _imageService = sl<ImageService>();
 
   final isLoading = false.obs;
 
   final productCategories = <ProductCategoryEntity>[].obs;
   ProductCategoryEntity? productCategory;
+  Uint8List? imageFileSelected;
 
   @override
   void onInit() async {
     await getAllProductCategory();
     super.onInit();
+  }
+
+  Future<void> getLocalImage() async {
+    isLoading.value = true;
+
+    imageFileSelected = await _imageService.getImage();
+
+    isLoading.value = false;
   }
 
   Future<void> insertProductCategory(String name) async {
@@ -60,10 +73,12 @@ class ProductCategoryRegisterController extends GetxController {
     if (res) {
       isLoading.value = false;
       productCategories.removeWhere((element) => element.id == id);
-      DialogWidget.feedback(result: true, message: 'Categoria deletada com sucesso');
+      DialogWidget.feedback(
+          result: true, message: 'Categoria deletada com sucesso');
     } else {
       isLoading.value = false;
-      DialogWidget.feedback(result: false, message: 'Erro ao deletar categoria');
+      DialogWidget.feedback(
+          result: false, message: 'Erro ao deletar categoria');
     }
   }
 }

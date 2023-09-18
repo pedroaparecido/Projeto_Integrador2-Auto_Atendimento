@@ -32,11 +32,31 @@ class ProductCategoryRegisterWidget extends StatelessWidget {
                     'Cadastro das Categorias',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 15),
+                  Obx(
+                    () => _controller.isLoading.value
+                        ? const Center(
+                            child: SizedBox(
+                                height: 40, child: CircularProgressIndicator()))
+                        : _controller.imageFileSelected == null
+                            ? Image.asset(
+                                'assets/images/no-img.jpg',
+                                height: 180.0,
+                                width: 250,
+                              )
+                            : Image.memory(_controller.imageFileSelected!,
+                                height: 250),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _controller.getLocalImage,
+                    child: const Text('Adicionar Imagem'),
+                  ),
+                  const SizedBox(height: 35),
                   Form(
                     key: formKey,
                     child: TextFormField(
-                      strutStyle: const StrutStyle(height: 1.6, forceStrutHeight: true),
+                      strutStyle:
+                          const StrutStyle(height: 1.6, forceStrutHeight: true),
                       decoration: const InputDecoration(
                         labelText: 'Nome da Categoria',
                       ),
@@ -48,7 +68,8 @@ class ProductCategoryRegisterWidget extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: Get.back,
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
                         child: const Text('Cancelar'),
                       ),
                       const SizedBox(width: 20),
