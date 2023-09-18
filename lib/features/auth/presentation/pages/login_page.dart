@@ -23,7 +23,11 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const FlutterLogo(),
+                  Image.asset(
+                    'assets/images/logo_rei_do_espeto.jpg',
+                    height: 200,
+                    width: 200,
+                  ),
                   const SizedBox(height: 35),
                   TextFormField(
                     controller: _emailController,
@@ -71,7 +75,8 @@ class PasswordFormFieldWidget extends StatefulWidget {
   final TextEditingController _senhaController;
 
   @override
-  State<PasswordFormFieldWidget> createState() => _PasswordFormFieldWidgetState();
+  State<PasswordFormFieldWidget> createState() =>
+      _PasswordFormFieldWidgetState();
 }
 
 class _PasswordFormFieldWidgetState extends State<PasswordFormFieldWidget> {
@@ -86,7 +91,9 @@ class _PasswordFormFieldWidgetState extends State<PasswordFormFieldWidget> {
         labelText: 'Senha',
         icon: const Icon(Icons.lock),
         suffixIcon: IconButton(
-          icon: isVisible ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+          icon: isVisible
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
           onPressed: () => setState(() => isVisible = !isVisible),
         ),
       ),

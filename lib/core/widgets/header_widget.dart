@@ -40,7 +40,11 @@ class HeaderWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const FlutterLogo()),
+                  child: Image.asset(
+                    'assets/images/logo_rei_do_espeto.jpg',
+                    height: 200,
+                    width: 200,
+                  )),
             ),
             const Spacer(),
             MediaQuery.of(context).size.width <= 600

@@ -30,7 +30,11 @@ class PublicMenuDrawerWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const FlutterLogo(),
+                child: Image.asset(
+                  'assets/images/logo_rei_do_espeto.jpg',
+                  height: 200,
+                  width: 200,
+                ),
               ),
             ),
           ),
