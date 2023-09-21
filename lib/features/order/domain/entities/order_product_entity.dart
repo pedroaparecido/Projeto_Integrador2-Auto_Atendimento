@@ -1,8 +1,5 @@
 class OrderProductEntity {
-  OrderProductEntity({
-    required this.productId,
-    required this.quantity
-  });
+  OrderProductEntity({required this.productId, required this.quantity});
 
   int productId;
   int quantity;

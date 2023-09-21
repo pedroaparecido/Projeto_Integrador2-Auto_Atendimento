@@ -1,4 +1,6 @@
 import 'package:atendimento_automatico/features/cart/presentation/pages/cart_detail_page.dart';
+import 'package:atendimento_automatico/features/order/presentation/pages/order_finished_page.dart';
+import 'package:atendimento_automatico/features/order/presentation/pages/order_insert_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,6 +9,7 @@ import 'features/admin/presentation/pages/admin_page.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/banners/presentation/pages/banners_page.dart';
 import 'features/company/presentation/pages/company_register_page.dart';
+import 'features/payment/presentation/pages/payment_interact_custumer_page.dart';
 import 'features/payment/presentation/pages/payment_select_type_page.dart';
 import 'features/payment/presentation/pages/processing_payment_page.dart';
 import 'features/payment/presentation/pages/status_payment_page.dart';
@@ -48,9 +51,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: RouteConfig.productCategory, page: () => ProductCategoryPage()),
         GetPage(name: RouteConfig.admin, page: () => const AdminPage()),
         GetPage(name: RouteConfig.login, page: () => LoginPage()),
-        // GetPage(name: RouteConfig.processingPayment, page: () => const ProcessingPaymentPage()),
-        // GetPage(name: RouteConfig.statusPayment, page: () => const StatusPaymentPage()),
         GetPage(name: RouteConfig.paymentType, page: () => const PaymentSelectTypePage()),
+        GetPage(name: RouteConfig.paymentInteract, page: () => PaymentInteractCustumerPage()),
+        GetPage(name: RouteConfig.orderInsert, page: () => OrderInsertPage()),
+        GetPage(name: RouteConfig.orderFinished, page: () => OrderFinishedPage()),
       ],
     );
   }
